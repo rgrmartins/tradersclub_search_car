@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Container } from './styles';
 
-export default function Home() {
+export default function CarForm() {
   return (
     <Container>
-      <p>Pesquisa de veículos do TradersClub</p>
+      <h1>Car Form</h1>
     </Container>
   );
 }
