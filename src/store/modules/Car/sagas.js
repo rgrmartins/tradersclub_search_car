@@ -10,14 +10,15 @@ export function* search({ payload }) {
   try {
     const { keyword } = payload;
 
-    const response = yield call(api.get, '/cars', {
-      title_like: keyword,
+    const response = yield call(api.get, 'cars', {
+      params: {
+        title_like: keyword,
+      },
     });
 
-    const { cars } = response.data;
-    console.log(`Car: ${cars}`);
+    const cars = response.data;
 
-    if (!cars) {
+    if (!cars || cars.length === 0) {
       toast.error('Veículo não Encontrado');
       history.push('/');
       yield put(searchFailure());

@@ -13,7 +13,7 @@ export default function car(state = INITIAL_STATE, action) {
         break;
       }
       case '@car/SEARCH_SUCCESS': {
-        draft.car = action.payload.car;
+        draft.car = action.payload.data;
         draft.keyword = null;
         break;
       }
