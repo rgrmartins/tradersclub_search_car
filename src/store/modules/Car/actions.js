@@ -25,10 +25,10 @@ export function createCarRequest(title) {
   };
 }
 
-export function saveCarRequest({ title, model, year, color, km, price }) {
+export function saveCarRequest({ titlecar, model, year, color, km, price }) {
   return {
     type: '@car/SAVE_CAR_REQUEST',
-    payload: { title, model, year, color, km, price },
+    payload: { titlecar, model, year, color, km, price },
   };
 }
 
@@ -36,6 +36,19 @@ export function updateCarRequest(car) {
   return {
     type: '@car/UPDATE_CAR_REQUEST',
     payload: { car },
+  };
+}
+
+export function loadBrands() {
+  return {
+    type: '@car/LOAD_BRANDS',
+  };
+}
+
+export function loadBrandsSuccess(data) {
+  return {
+    type: '@car/LOAD_BRANDS_SUCCESS',
+    payload: { data },
   };
 }
 

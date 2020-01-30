@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   keyword: null,
   car: null,
   title: null,
+  brands: null,
 };
 
 export default function car(state = INITIAL_STATE, action) {
@@ -28,6 +29,10 @@ export default function car(state = INITIAL_STATE, action) {
       }
       case '@car/CAR_FAILURE': {
         draft.title = null;
+        break;
+      }
+      case '@car/LOAD_BRANDS_SUCCESS': {
+        draft.brands = action.payload.data;
         break;
       }
       default:

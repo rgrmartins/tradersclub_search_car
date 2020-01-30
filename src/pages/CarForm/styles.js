@@ -35,6 +35,27 @@ export const Container = styled.div`
       }
     }
 
+    select {
+      width: 985px;
+      text-align: center;
+      height: 3rem;
+      font-size: 1rem;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      background: none;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 15px
+    }
+    option {
+      background: #1f2d40;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 15px;
+    }
+
     .big {
       width: 985px;
       text-align: center;

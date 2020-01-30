@@ -4,7 +4,12 @@ import { toast } from 'react-toastify';
 import history from '../../../services/history';
 import api from '../../../services/api';
 
-import { searchFailure, searchSuccess, carFailure } from './actions';
+import {
+  searchFailure,
+  searchSuccess,
+  carFailure,
+  loadBrandsSuccess,
+} from './actions';
 
 export function* search({ payload }) {
   try {
@@ -41,12 +46,13 @@ export function* carCreate() {
 }
 
 export function* saveCar({ payload }) {
-  const { title, model, year, color, km, price } = payload;
+  const { titlecar, model, year, brand, color, km, price } = payload;
   try {
     const response = yield call(api.post, 'cars', {
-      title,
+      title: titlecar,
       model,
       year,
+      brand,
       color,
       km,
       price,
@@ -55,13 +61,28 @@ export function* saveCar({ payload }) {
     const car = response.data;
 
     if (!car || car.length === 0) {
-      history.push('/');
       yield put(searchFailure());
-    } else {
-      history.push('/');
     }
+    history.push('/');
   } catch (error) {
     toast.error('Falha ao salvar o veículo.');
+    yield put(carFailure());
+  }
+}
+
+export function* loadingBrands() {
+  try {
+    const response = yield call(api.get, 'brands');
+
+    const brands = response.data;
+
+    if (!brands || brands.length === 0) {
+      history.push('/');
+    } else {
+      yield put(loadBrandsSuccess(brands));
+    }
+  } catch (error) {
+    toast.error('Falha ao carregar as Montadoras.');
     yield put(carFailure());
   }
 }
@@ -70,4 +91,5 @@ export default all([
   takeLatest('@car/SEARCH_REQUEST', search),
   takeLatest('@car/CREATE_CAR_REQUEST', carCreate),
   takeLatest('@car/SAVE_CAR_REQUEST', saveCar),
+  takeLatest('@car/LOAD_BRANDS', loadingBrands),
 ]);
