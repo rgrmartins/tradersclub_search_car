@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import history from '../../../services/history';
 import api from '../../../services/api';
 
-import { searchFailure, searchSuccess } from './actions';
+import { searchFailure, searchSuccess, carFailure } from './actions';
 
 export function* search({ payload }) {
   try {
@@ -19,12 +19,10 @@ export function* search({ payload }) {
     const cars = response.data;
 
     if (!cars || cars.length === 0) {
-      toast.error('Veículo não Encontrado');
       history.push('/');
       yield put(searchFailure());
     } else {
       yield put(searchSuccess(cars));
-      toast.success('Veículo Encontrado');
       history.push('/car_list');
     }
   } catch (error) {
@@ -33,4 +31,43 @@ export function* search({ payload }) {
   }
 }
 
-export default all([takeLatest('@car/SEARCH_REQUEST', search)]);
+export function* carCreate() {
+  try {
+    history.push('/car_form');
+  } catch (error) {
+    toast.error('Falha criar formulário.');
+    yield put(carFailure());
+  }
+}
+
+export function* saveCar({ payload }) {
+  const { title, model, year, color, km, price } = payload;
+  try {
+    const response = yield call(api.post, 'cars', {
+      title,
+      model,
+      year,
+      color,
+      km,
+      price,
+    });
+
+    const car = response.data;
+
+    if (!car || car.length === 0) {
+      history.push('/');
+      yield put(searchFailure());
+    } else {
+      history.push('/');
+    }
+  } catch (error) {
+    toast.error('Falha ao salvar o veículo.');
+    yield put(carFailure());
+  }
+}
+
+export default all([
+  takeLatest('@car/SEARCH_REQUEST', search),
+  takeLatest('@car/CREATE_CAR_REQUEST', carCreate),
+  takeLatest('@car/SAVE_CAR_REQUEST', saveCar),
+]);

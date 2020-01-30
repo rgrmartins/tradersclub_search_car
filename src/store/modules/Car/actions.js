@@ -18,30 +18,23 @@ export function searchFailure() {
   };
 }
 
-export function createCarRequest(car) {
+export function createCarRequest(title) {
   return {
     type: '@car/CREATE_CAR_REQUEST',
-    payload: { car },
+    payload: { title },
   };
 }
 
-export function createCarSuccess(car) {
+export function saveCarRequest({ title, model, year, color, km, price }) {
   return {
-    type: '@car/CREATE_CAR_SUCCESS',
-    payload: { car },
+    type: '@car/SAVE_CAR_REQUEST',
+    payload: { title, model, year, color, km, price },
   };
 }
 
 export function updateCarRequest(car) {
   return {
     type: '@car/UPDATE_CAR_REQUEST',
-    payload: { car },
-  };
-}
-
-export function updateCarSuccess(car) {
-  return {
-    type: '@car/UPDATE_CAR_SUCCESS',
     payload: { car },
   };
 }

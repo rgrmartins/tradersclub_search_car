@@ -1,23 +1,34 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
-
 import { Container } from './styles';
 
-import { searchRequest } from '../../store/modules/Car/actions';
+import {
+  searchRequest,
+  createCarRequest,
+} from '../../store/modules/Car/actions';
 
 export default function SearchBar() {
   const dispatch = useDispatch();
 
-  function handleSubmit({ keyword }) {
-    dispatch(searchRequest(keyword));
+  function handleSubmit({ title }) {
+    dispatch(createCarRequest(title));
+  }
+
+  function handleChange(e) {
+    const { value } = e.target;
+    dispatch(searchRequest(value));
   }
 
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <Input name="keyword" placeholder="Pesquisar Veículo" />
-        <button type="submit">Pesquisar</button>
+        <Input
+          name="title"
+          placeholder="Pesquisar Veículo"
+          onChange={handleChange}
+        />
+        <button type="submit">Cadastrar</button>
       </Form>
     </Container>
   );

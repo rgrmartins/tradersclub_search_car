@@ -3,6 +3,7 @@ import produce from 'immer';
 const INITIAL_STATE = {
   keyword: null,
   car: null,
+  title: null,
 };
 
 export default function car(state = INITIAL_STATE, action) {
@@ -19,6 +20,14 @@ export default function car(state = INITIAL_STATE, action) {
       }
       case '@car/SEARCH_FAILURE': {
         draft.keyword = null;
+        break;
+      }
+      case '@car/CREATE_CAR_REQUEST': {
+        draft.title = action.payload.title;
+        break;
+      }
+      case '@car/CAR_FAILURE': {
+        draft.title = null;
         break;
       }
       default:
