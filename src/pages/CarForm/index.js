@@ -36,7 +36,6 @@ export default function CarForm() {
   }, [brands]);
 
   function handleSubmit({ title, model, brand, year, color, km, price }) {
-    console.log(brand);
     dispatch(saveCarRequest({ title, model, brand, year, color, km, price }));
   }
 
