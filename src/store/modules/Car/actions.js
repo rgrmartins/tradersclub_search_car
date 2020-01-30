@@ -25,10 +25,18 @@ export function createCarRequest(title) {
   };
 }
 
-export function saveCarRequest({ titlecar, model, year, color, km, price }) {
+export function saveCarRequest({
+  title,
+  model,
+  brand,
+  year,
+  color,
+  km,
+  price,
+}) {
   return {
     type: '@car/SAVE_CAR_REQUEST',
-    payload: { titlecar, model, year, color, km, price },
+    payload: { title, model, brand, year, color, km, price },
   };
 }
 

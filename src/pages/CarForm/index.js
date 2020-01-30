@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Form, Input } from '@rocketseat/unform';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Form, Input, Select } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import history from '../../services/history';
 
+import api from '../../services/api';
+
 import { Container } from './styles';
 
-import { saveCarRequest, loadBrands } from '../../store/modules/Car/actions';
+import { saveCarRequest } from '../../store/modules/Car/actions';
 
 const schema = Yup.object().shape({
   title: Yup.string().required('O Nome do veículo é obrigatório'),
@@ -19,18 +21,24 @@ const schema = Yup.object().shape({
 });
 
 export default function CarForm() {
+  const [brands, setBrands] = useState([]);
   const dispatch = useDispatch();
-  const brands = useSelector(state => state.car.brands);
 
-  function handleSubmit({ titlecar, model, year, brand, color, km, price }) {
-    dispatch(
-      saveCarRequest({ titlecar, model, year, brand, color, km, price })
-    );
+  async function loadBrands() {
+    const response = await api.get('brands');
+    setBrands(response.data);
   }
 
   useEffect(() => {
-    dispatch(loadBrands());
-  }, [dispatch]);
+    if (!brands || brands.length === 0) {
+      loadBrands();
+    }
+  }, [brands]);
+
+  function handleSubmit({ title, model, brand, year, color, km, price }) {
+    console.log(brand);
+    dispatch(saveCarRequest({ title, model, brand, year, color, km, price }));
+  }
 
   function handleCancel() {
     history.push('/');
@@ -38,20 +46,15 @@ export default function CarForm() {
 
   return (
     <Container>
-      <Form schema={schema}>
-        <Input className="big" name="titlecar" placeholder="Nome do Veículo" />
+      <Form schema={schema} onSubmit={handleSubmit}>
+        <Input className="big" name="title" placeholder="Nome do Veículo" />
         <Input className="lado" name="model" placeholder="Modelo do Veículo" />
         <Input className="lado" name="year" placeholder="Ano do Veículo" />
-        <select>
-          <option>Selecione a Montadora do Veículo</option>
-          {brands
-            ? brands.map(brand => (
-                <option key={brand.id} value={brand.name}>
-                  {brand.name}
-                </option>
-              ))
-            : []}
-        </select>
+        <Select
+          name="brand"
+          options={brands}
+          placeholder="Montadora do Veículo"
+        />
         <Input className="lado" name="color" placeholder="cor do Veículo" />
         <Input className="lado" name="km" placeholder="Km do Veículo" />
         <Input className="lado" name="price" placeholder="Preço do Veículo" />
@@ -62,9 +65,7 @@ export default function CarForm() {
         <button className="blueButton" type="button">
           Remover
         </button>
-        <button type="button" onClick={handleSubmit}>
-          Salvar
-        </button>
+        <button type="submit">Salvar</button>
       </Form>
     </Container>
   );

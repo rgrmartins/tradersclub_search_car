@@ -46,13 +46,13 @@ export function* carCreate() {
 }
 
 export function* saveCar({ payload }) {
-  const { titlecar, model, year, brand, color, km, price } = payload;
+  const { title, model, brand, year, color, km, price } = payload;
   try {
     const response = yield call(api.post, 'cars', {
-      title: titlecar,
+      title,
       model,
-      year,
       brand,
+      year,
       color,
       km,
       price,
